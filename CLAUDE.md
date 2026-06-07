@@ -25,6 +25,10 @@ Các file dưới đây được nạp vào context của **mọi** phiên làm 
 - Khi viết/sửa **tài liệu** → bám `docs-style.md`. Khi viết/sửa **script** → bám `scripting-safety.md`.
 - Khi spawn sub-agent qua Task tool, nhắc rõ trong prompt: "Tuân thủ CLAUDE.md và mọi skill được import trong đó."
 
+## Git
+
+- **Không thêm trailer `Co-Authored-By: Claude ...`** (hay bất kỳ co-author Claude/Anthropic nào) vào commit message. Tác giả commit chỉ là người dùng.
+
 ## Ngôn ngữ
 
 - Trả lời người dùng bằng tiếng Việt trừ khi được yêu cầu khác.
