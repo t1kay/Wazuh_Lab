@@ -47,6 +47,25 @@ sudo netplan apply
 echo "  → Static IP 192.168.56.10 đã được set."
 echo ""
 
+# --- Preflight: đủ đĩa + inode chưa? ---
+# Dashboard giải nén hàng trăm nghìn file node_modules → cạn cả byte lẫn inode.
+# Ubuntu mặc định chỉ cấp ~½ đĩa cho LV root → nới hết VG trước khi cài.
+echo "[3.5/4] Kiểm tra tài nguyên đĩa/inode..."
+ROOT_LV="$(findmnt -no SOURCE /)"
+VG_FREE_GB="$(sudo vgs --noheadings -o vg_free --units g 2>/dev/null | head -1 | tr -dc '0-9' )"
+if [ -n "${VG_FREE_GB}" ] && [ "${VG_FREE_GB}" -gt 0 ]; then
+    echo "  → VG còn ${VG_FREE_GB}G trống — mở rộng LV root cho hết đĩa (cờ -r tăng cả inode)..."
+    sudo lvextend -r -l +100%FREE "${ROOT_LV}" || echo "  ⚠️  lvextend bỏ qua (không phải LVM hoặc đã full)."
+fi
+ROOT_FREE_GB="$(df -BG --output=avail / | tail -1 | tr -dc '0-9')"
+if [ "${ROOT_FREE_GB:-0}" -lt 25 ]; then
+    echo "  ❌ Chỉ còn ${ROOT_FREE_GB}G trống trên /. All-in-one cần ≥25G."
+    echo "     Nới đĩa VM rồi chạy lại. Chẩn đoán: df -h / ; df -i / ; lsblk ; sudo vgs"
+    exit 1
+fi
+echo "  → Đĩa OK: ${ROOT_FREE_GB}G trống trên /."
+echo ""
+
 # --- Bước 4: Cài đặt Wazuh All-in-One ---
 echo "[4/4] Cài đặt Wazuh Server All-in-One..."
 echo "  ⏳ Quá trình này mất khoảng 15-30 phút..."
