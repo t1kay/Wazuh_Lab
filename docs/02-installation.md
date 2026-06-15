@@ -387,9 +387,11 @@ curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring 
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" \
   | sudo tee /etc/apt/sources.list.d/wazuh.list
 
-# Cài agent
+# Cài agent — GHIM version = manager (4.9.2). Agent version PHẢI ≤ manager,
+# nếu không manager từ chối enroll: "Agent version must be lower or equal to manager version".
 sudo apt update
-sudo WAZUH_MANAGER="192.168.56.10" apt install wazuh-agent -y
+sudo WAZUH_MANAGER="192.168.56.10" apt install -y wazuh-agent=4.9.2-1
+sudo apt-mark hold wazuh-agent   # chống apt tự nâng lên bản > manager
 sudo systemctl daemon-reload
 sudo systemctl enable --now wazuh-agent
 

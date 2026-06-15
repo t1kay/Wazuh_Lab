@@ -8,6 +8,8 @@ set -e
 
 WAZUH_SERVER_IP="192.168.56.10"
 AGENT_IP="192.168.56.20"
+# Ghim = version manager. Agent PHẢI ≤ manager, nếu không manager từ chối enroll.
+WAZUH_VERSION="4.9.2-1"
 
 echo "=========================================="
 echo "  🖥️  Ubuntu Agent + Attacker Setup"
@@ -47,10 +49,11 @@ echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4
   | sudo tee /etc/apt/sources.list.d/wazuh.list
 
 sudo apt update
-sudo WAZUH_MANAGER="${WAZUH_SERVER_IP}" apt install wazuh-agent -y
+sudo WAZUH_MANAGER="${WAZUH_SERVER_IP}" apt install -y "wazuh-agent=${WAZUH_VERSION}"
+sudo apt-mark hold wazuh-agent   # chống apt tự nâng lên bản > manager (gây enroll fail)
 sudo systemctl daemon-reload
 sudo systemctl enable --now wazuh-agent
-echo "  → Wazuh Agent đã được cài và kết nối tới ${WAZUH_SERVER_IP}"
+echo "  → Wazuh Agent ${WAZUH_VERSION} đã được cài và kết nối tới ${WAZUH_SERVER_IP}"
 echo ""
 
 # --- Bước 4: Cài Attack Tools (thay thế Kali Linux) ---
