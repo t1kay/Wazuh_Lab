@@ -16,6 +16,7 @@ Các file dưới đây được nạp vào context của **mọi** phiên làm 
 @.claude/skills/wazuh-lab.md
 @.claude/skills/docs-style.md
 @.claude/skills/scripting-safety.md
+@.claude/skills/security-mindset.md
 
 > Khi thêm skill mới vào `.claude/skills/`, hãy thêm một dòng `@.claude/skills/<tên>.md` vào danh sách trên để nó được tự động import.
 
@@ -28,6 +29,13 @@ Các file dưới đây được nạp vào context của **mọi** phiên làm 
 ## Git
 
 - **Không thêm trailer `Co-Authored-By: Claude ...`** (hay bất kỳ co-author Claude/Anthropic nào) vào commit message. Tác giả commit chỉ là người dùng.
+- **Commit theo Conventional Commits:** `type: mô tả ngắn` (tiếng Anh, thể mệnh lệnh, không dấu chấm cuối).
+  - Type hay dùng: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`, `style`.
+  - Mỗi thay đổi logic khác nhau → một commit riêng (không gộp docs + fix vào một commit).
+  - Ví dụ:
+    - `docs: finalize README.md architecture, features, project structure, and knowledge with Docker integration`
+    - `fix: resolve systemd cgroups and sshd restart issues on Docker Desktop host`
+    - `docs: add demo video to README`
 
 ## Ngôn ngữ
 
