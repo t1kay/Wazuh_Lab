@@ -51,7 +51,20 @@ echo ""
 echo "[4/4] Cài đặt Wazuh Server All-in-One..."
 echo "  ⏳ Quá trình này mất khoảng 15-30 phút..."
 echo ""
-curl -sO https://packages.wazuh.com/4.x/wazuh-install.sh
+# -f: fail (không lưu trang lỗi); -L: theo redirect; -S: hiện lỗi; --retry: thử lại khi mạng chập chờn
+if ! curl -fSL --retry 3 --retry-delay 5 -o wazuh-install.sh \
+    https://packages.wazuh.com/4.9/wazuh-install.sh; then
+    echo "  ❌ Tải wazuh-install.sh thất bại. Kiểm tra internet trong VM:"
+    echo "     ping -c2 8.8.8.8   (mạng)   |   ping -c2 packages.wazuh.com   (DNS)"
+    exit 1
+fi
+
+# Xác minh file là script thật, không phải trang HTML lỗi
+if ! head -n1 wazuh-install.sh | grep -q '^#!/'; then
+    echo "  ❌ File tải về không phải shell script (có thể bị 404/redirect lỗi)."
+    exit 1
+fi
+
 sudo bash wazuh-install.sh -a
 
 echo ""
