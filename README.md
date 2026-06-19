@@ -30,6 +30,7 @@ Dự án lab SIEM (Security Information and Event Management) sử dụng Wazuh 
 | **Ngày 1** | Xây dựng hạ tầng: VMs, Wazuh Server, Agents | [02-installation.md](docs/02-installation.md) |
 | **Ngày 2** | 4 bài lab: Brute Force, FIM, Active Response, Vuln Scan | [03-lab-exercises.md](docs/03-lab-exercises.md) |
 | **Ngày 3** | Custom Rules + Tài liệu báo cáo | [04-custom-rules.md](docs/04-custom-rules.md) |
+| **Tham khảo** | Tổng hợp lỗi đã gặp & cách khắc phục | [05-troubleshooting.md](docs/05-troubleshooting.md) |
 
 ## 🗂️ Cấu Trúc Thư Mục
 
