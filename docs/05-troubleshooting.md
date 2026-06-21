@@ -21,8 +21,10 @@ Nhật ký các lỗi **thực tế** đã gặp khi dựng lab này và cách x
 | 11 | `Invalid element ... 'directories'` → `No client configured` | Đặt sai chỗ block `<directories>` (FIM) trong `ossec.conf` | [C.3](#c3) |
 | 12 | `Connection refused` `[192.168.56.10]:1514` (thoáng qua) | Manager chưa sẵn sàng lúc agent thử — tự hết | [C.4](#c4) |
 | 13 | `File for passwords not found: rockyou.txt` (hydra) | Chưa cài wordlist | [D.1](#d1) |
-| 14 | `MissingEndCurlyBrace` / `AmpersandNotAllowed` khi chạy `.ps1` | File `.ps1` lưu UTF-8 **không BOM** | [E.1](#e1) |
-| 15 | Lệnh dán vào terminal bị **tách dòng** → chạy nhầm | Paste multi-line lỗi (sed đứt dòng) | [E.2](#e2) |
+| 14 | Active Response không chặn IP (rule fire nhưng không có rule 651) | Block `<active-response>` nằm trong comment `<!-- -->` / thiếu `iptables` | [D.2](#d2) |
+| 15 | `Job for wazuh-manager.service failed` sau khi sửa `ossec.conf` | Lỗi XML trong block vừa thêm | [D.3](#d3) |
+| 16 | `MissingEndCurlyBrace` / `AmpersandNotAllowed` khi chạy `.ps1` | File `.ps1` lưu UTF-8 **không BOM** | [E.1](#e1) |
+| 17 | Lệnh dán vào terminal bị **tách dòng** → chạy nhầm | Paste multi-line lỗi (sed đứt dòng) | [E.2](#e2) |
 
 ---
 
@@ -368,12 +370,85 @@ hydra -l testuser -P /tmp/lab-wordlist.txt ssh://192.168.56.20 -t 4
 | `5710` | sshd: attempt to login using a non-existent / invalid user | 5 |
 | `5760` | sshd: authentication failed (từng lần thử sai) | 5 |
 | `5503` | PAM: User login failed | 5 |
-| `5712` | sshd: brute force (nhiều fail trong timeframe) | 10 |
+| `5763` | sshd: brute force (nhiều fail trong timeframe) — **rule chính quan sát được** | 10 |
+| `40112` | Multiple auth failures **followed by a success** (brute force thành công) | 12 |
+
+> 💡 Tùy version/ruleset, brute force có thể khớp `5763` (lab này) hoặc `5712`. Khi cấu hình Active Response, dùng đúng rule_id **thực tế đang fire** (kiểm tra trong `alerts.log`), đừng copy cứng từ tài liệu.
 
 ```bash
 # Đối chiếu log gốc trên VM2:
 sudo grep "Failed password" /var/log/auth.log | tail -n 10
 ```
+
+### <a id="d2"></a>D.2 — ⭐ Active Response không chặn IP (rule fire nhưng không có `rule 651`)
+
+**Triệu chứng:** brute force sinh alert `5763` đều đặn, nhưng IP attacker **không bị block**; `active-responses.log` trên agent không có entry mới; Manager không có `Rule: 651`.
+
+**Gốc rễ (xếp theo tần suất gặp):**
+
+1. **Block `<active-response>` nằm trong comment.** `ossec.conf` mặc định có sẵn block ví dụ bọc trong `<!-- ... -->`. Sửa `rules_id` **bên trong comment** → manager bỏ qua hoàn toàn.
+2. **Sai `rules_id`** (vd để `5712` trong khi rule thực fire là `5763`).
+3. **Agent thiếu `iptables`** → script `firewall-drop` chạy nhưng không có lệnh để DROP (`iptables: command not found`).
+
+**Chẩn đoán theo chuỗi (rule fire → AR dispatch → agent execute):**
+
+```bash
+# 1. (VM1) Block AR có bị bọc trong comment không? Xem dòng ngay trên/dưới block:
+sudo grep -n -B1 -A7 "<active-response>" /var/ossec/etc/ossec.conf
+# 2. (VM1) Manager có kích AR không (rule 651 = host blocked)?
+sudo grep -a "Rule: 651" /var/ossec/logs/alerts/alerts.log | tail
+# 3. (VM2) Agent có nhận lệnh + daemon AR chạy không?
+sudo tail /var/ossec/logs/active-responses.log
+sudo /var/ossec/bin/wazuh-control status | grep execd     # phải "running"
+```
+
+**Khắc phục:**
+
+```bash
+# (VM1) Bỏ comment để block lộ ra ngoài — kết quả đúng:
+#   <active-response>
+#     <command>firewall-drop</command>
+#     <location>local</location>
+#     <rules_id>5763</rules_id>
+#     <timeout>120</timeout>
+#   </active-response>
+sudo nano /var/ossec/etc/ossec.conf
+
+# (VM2) Cài iptables nếu thiếu:
+sudo apt update && sudo apt install -y iptables
+
+# (VM1) Test cú pháp TRƯỚC khi restart rồi mới restart:
+sudo /var/ossec/bin/wazuh-analysisd -t && echo "CONFIG OK"
+sudo systemctl restart wazuh-manager
+```
+
+✅ **Verify:** sau khi trigger lại brute force — `active-responses.log` có `firewall-drop ... add ... 192.168.56.20`; `sudo iptables -L -n | grep 192.168.56.20` thấy DROP; Dashboard có `rule 651`.
+
+### <a id="d3"></a>D.3 — `Job for wazuh-manager.service failed` sau khi sửa `ossec.conf`
+
+**Triệu chứng:**
+
+```
+Job for wazuh-manager.service failed because the control process exited with error code.
+```
+
+**Gốc rễ:** lỗi XML trong block vừa thêm/sửa (thiếu thẻ đóng, đặt ngoài `<ossec_config>`, hoặc bỏ comment lệch).
+
+**Khắc phục — bắt lỗi đúng dòng thay vì đoán:**
+
+```bash
+sudo /var/ossec/bin/wazuh-analysisd -t          # in "ERROR: ... at line X"
+sudo tail -n 30 /var/ossec/logs/ossec.log
+```
+
+Sửa đúng dòng báo lỗi. Nếu cần manager chạy lại ngay, rollback bản backup rồi thêm lại cẩn thận:
+
+```bash
+sudo cp /var/ossec/etc/ossec.conf.bak /var/ossec/etc/ossec.conf
+sudo systemctl restart wazuh-manager
+```
+
+> ⚠️ **Bài học:** luôn `cp ossec.conf ossec.conf.bak` **trước khi sửa**, và chạy `wazuh-analysisd -t` **trước** mỗi lần restart. Tool test cấu hình là `wazuh-analysisd -t` — **không** phải `wazuh-logtest -t` (4.9 không có cờ `-t` cho logtest). Rollback về `.bak` sẽ **xóa luôn** thay đổi hợp lệ khác → sau rollback nhớ thêm lại block cần thiết (đây chính là lý do block AR "biến mất" giữa chừng).
 
 ---
 
