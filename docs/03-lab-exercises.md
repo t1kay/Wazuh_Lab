@@ -114,8 +114,8 @@ nmap -sV 192.168.56.10
 
 - [x] Lab 1: alert brute force SSH xuất hiện (rule **5763**, kèm 40112 success)
 - [x] Lab 2: sự kiện FIM added/deleted (rule 554/553)
-- [ ] Lab 3: Active Response chặn được IP attacker — *đang làm: đã bỏ comment block AR, chờ restart + trigger*
-- [ ] Lab 4: Vulnerability Detection liệt kê CVE
+- [x] Lab 3: Active Response chặn được IP attacker (rule 5763 → firewall-drop → iptables DROP)
+- [x] Lab 4: Vulnerability Detection liệt kê CVE (kernel linux-image, severity High/Medium)
 - [ ] Đã chụp screenshot từng lab cho báo cáo
 
 ---
