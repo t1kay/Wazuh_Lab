@@ -31,6 +31,7 @@ Dự án lab SIEM (Security Information and Event Management) sử dụng Wazuh 
 | **Ngày 2** | 4 bài lab: Brute Force, FIM, Active Response, Vuln Scan | [03-lab-exercises.md](docs/03-lab-exercises.md) |
 | **Ngày 3** | Custom Rules + Tài liệu báo cáo | [04-custom-rules.md](docs/04-custom-rules.md) |
 | **Tham khảo** | Tổng hợp lỗi đã gặp & cách khắc phục | [05-troubleshooting.md](docs/05-troubleshooting.md) |
+| **Demo** | Kịch bản quay video demo (phần rule mặc định) | [06-demo-script.md](docs/06-demo-script.md) |
 
 ## 🗂️ Cấu Trúc Thư Mục
 
