@@ -13,14 +13,17 @@
 - Rule (`/var/ossec/etc/rules/local_rules.xml`) khớp field → sinh alert + level.
 - Custom rule dùng ID từ **100000 trở lên** (vùng dành cho user).
 
-### Bước 2: Viết rule cảnh báo brute force nâng cao
+### Bước 2: Viết rule override — nâng mức brute force theo nguồn
+
+Thay vì lặp lại rule mặc định `5763`, ta viết một **override rule**: chạy sau `5763` và **nâng severity** khi nguồn tấn công là host lab đã biết. Đây là việc default **không** làm được.
 
 ```xml
 <!-- /var/ossec/etc/rules/local_rules.xml (trên VM1) -->
 <group name="local,syslog,sshd,">
-  <rule id="100001" level="12" frequency="8" timeframe="60">
-    <if_matched_sid>5710</if_matched_sid>
-    <description>Custom: SSH brute force - 8 lần thất bại trong 60s</description>
+  <rule id="100001" level="13">
+    <if_sid>5763</if_sid>
+    <srcip>192.168.56.20</srcip>
+    <description>Custom: SSH brute force tu host lab da biet (192.168.56.20)</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -28,16 +31,17 @@
 </group>
 ```
 
+> 💡 **Khác default ở đâu:** `5763` (level 10) báo brute force cho **mọi** nguồn; `100001` chỉ kích thêm khi `srcip` khớp host quan tâm và nâng lên **level 13**. `if_sid 5763` = chạy *sau* khi 5763 đã fire → cả hai cùng hiện. Bản rule sẵn dùng: [`configs/local_rules.xml`](../configs/local_rules.xml).
+
 ```bash
+sudo cp /var/ossec/etc/rules/local_rules.xml /var/ossec/etc/rules/local_rules.xml.bak
+sudo /var/ossec/bin/wazuh-analysisd -t && echo "CONFIG OK"   # test cú pháp TRƯỚC khi restart
 sudo systemctl restart wazuh-manager
 ```
 
-✅ **Verify:** Dùng `wazuh-logtest` để kiểm tra rule khớp:
-```bash
-sudo /var/ossec/bin/wazuh-logtest
-# Dán một dòng log auth.log "Failed password ... invalid user"
-# Output phải hiện Rule id: 100001 (sau khi đủ frequency)
-```
+✅ **Verify:** trigger brute force từ VM2 (`hydra` 2 lần cho đủ ngưỡng `5763`), rồi:
+- Dashboard → *Threat Hunting*, search `rule.id : 100001` → thấy alert **level 13**, `srcip: 192.168.56.20`, `rule.mitre.id: T1110`.
+- So sánh trực quan: search `rule.id : (5763 OR 100001)` → mỗi lần `5763` (level 10) kéo theo một `100001` (level 13).
 
 ---
 

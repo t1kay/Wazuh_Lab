@@ -1,0 +1,29 @@
+<!--
+  Custom rules — Wazuh Manager (VM1)
+  Đích đến trên VM1: /var/ossec/etc/rules/local_rules.xml
+  Custom rule ID >= 100000 (vùng dành cho user). Xem docs/04-custom-rules.md.
+-->
+<group name="local,syslog,sshd,">
+
+  <!--
+    100001 — OVERRIDE rule: nâng mức cảnh báo brute force SSH khi nguồn tấn
+    công là host lab đã biết (192.168.56.20 = VM2).
+
+    Khác rule mặc định 5763 (level 10) ở chỗ: 5763 báo brute force chung cho
+    MỌI nguồn; 100001 chỉ kích thêm khi srcip khớp host trong danh sách quan
+    tâm, và nâng lên level 13 — việc default KHÔNG làm được. Đây là ví dụ
+    custom rule mang giá trị thật (severity theo ngữ cảnh), không chỉ trùng lặp.
+
+    if_sid 5763 = chạy SAU khi rule 5763 (sshd brute force) đã fire.
+    Map MITRE T1110 (Brute Force).
+  -->
+  <rule id="100001" level="13">
+    <if_sid>5763</if_sid>
+    <srcip>192.168.56.20</srcip>
+    <description>Custom: SSH brute force tu host lab da biet (192.168.56.20)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+</group>
