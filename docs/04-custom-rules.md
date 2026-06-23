@@ -1,7 +1,7 @@
-# 📅 Ngày 3 — Custom Rules & Báo Cáo
+# 🛡️ Custom Rules & Báo Cáo
 
 > Thời gian ước tính: **4–5 tiếng**
-> Điều kiện: đã chạy xong 4 lab [Ngày 2](03-lab-exercises.md).
+> Điều kiện: đã chạy xong 4 [bài lab thực hành](03-lab-exercises.md).
 
 ---
 
@@ -70,7 +70,7 @@ sudo systemctl restart wazuh-manager
 | Mục | Nội dung |
 |-----|----------|
 | 1. Tổng quan | Mục tiêu lab, kiến trúc (kèm sơ đồ từ README) |
-| 2. Hạ tầng | Tóm tắt Ngày 1 — VM, network, agent status |
+| 2. Hạ tầng | Tóm tắt hạ tầng — VM, network, agent status |
 | 3. Kết quả 4 lab | Mỗi lab: mô tả + rule ID + screenshot alert |
 | 4. Custom rule | Rule/decoder đã viết + kết quả `wazuh-logtest` |
 | 5. Kết luận | Bài học, hạn chế, hướng mở rộng |
@@ -84,7 +84,7 @@ sudo systemctl restart wazuh-manager
 
 ---
 
-## ✅ Checklist Cuối Ngày 3
+## ✅ Checklist Custom Rule & Báo Cáo
 
 - [ ] Custom rule `100001` khớp qua `wazuh-logtest`
 - [ ] (Tùy chọn) Custom decoder tách đúng field
@@ -92,7 +92,7 @@ sudo systemctl restart wazuh-manager
 - [ ] Screenshot đầy đủ trong `screenshots/`
 - [ ] Báo cáo hoàn chỉnh 5 mục
 
-**Hoàn thành → kết thúc lab Wazuh SIEM 3 ngày! 🎉**
+**Hoàn thành → kết thúc lab Wazuh SIEM! 🎉**
 
 ---
 

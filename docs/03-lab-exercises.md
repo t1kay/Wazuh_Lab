@@ -1,7 +1,7 @@
-# 📅 Ngày 2 — 4 Bài Lab Thực Hành
+# 🧪 4 Bài Lab Thực Hành
 
 > Thời gian ước tính: **5–6 tiếng**
-> Điều kiện: đã hoàn thành [Ngày 1](02-installation.md) — 2 agent Active, dashboard truy cập được.
+> Điều kiện: đã hoàn thành phần [Xây dựng hạ tầng](02-installation.md) — 2 agent Active, dashboard truy cập được.
 
 ---
 
@@ -25,7 +25,7 @@ hydra -l testuser -P ~/pw.txt ssh://192.168.56.20
 | `5763` | **sshd: brute force** (đã chạm ngưỡng) | 10 |
 | `40112` | Multiple auth failures **followed by a success** (brute force thành công) | 12 |
 
-> 💡 Ghi lại rule ID + screenshot để dùng cho báo cáo Ngày 3. Rule chính của lab là **`5763`** (map MITRE **T1110 — Brute Force**); `40112` báo brute force thành công vì wordlist chứa đúng `labpassword123`.
+> 💡 Ghi lại rule ID + screenshot để dùng cho [báo cáo](04-custom-rules.md). Rule chính của lab là **`5763`** (map MITRE **T1110 — Brute Force**); `40112` báo brute force thành công vì wordlist chứa đúng `labpassword123`.
 
 ---
 
@@ -110,7 +110,7 @@ nmap -sV 192.168.56.10
 
 ---
 
-## ✅ Checklist Cuối Ngày 2
+## ✅ Checklist Bài Lab
 
 - [x] Lab 1: alert brute force SSH xuất hiện (rule **5763**, kèm 40112 success)
 - [x] Lab 2: sự kiện FIM added/deleted (rule 554/553)

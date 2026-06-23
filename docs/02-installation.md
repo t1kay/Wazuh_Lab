@@ -1,6 +1,6 @@
-# 📅 Ngày 1 — Hướng Dẫn Xây Dựng Hạ Tầng Lab
+# 🏗️ Xây Dựng Hạ Tầng Lab
 
-> Thời gian ước tính: **6–7 tiếng** (chia 2 buổi)
+> Thời gian ước tính: **6–7 tiếng** (có thể chia 2 buổi)
 
 ---
 
@@ -405,7 +405,7 @@ sudo systemctl status wazuh-agent
 ```bash
 sudo apt install -y hydra nmap nikto netcat-openbsd john dirb
 
-# Tạo user test cho bài lab ngày mai
+# Tạo user test cho bài lab brute force
 sudo useradd -m -s /bin/bash testuser
 echo "testuser:labpassword123" | sudo chpasswd
 ```
@@ -467,21 +467,21 @@ Phải thấy **2 agents** với status **Active**:
 
 ---
 
-## Phần E — Snapshot & Kết Thúc Ngày 1 (15 phút)
+## Phần E — Snapshot & Hoàn Tất Hạ Tầng (15 phút)
 
 ### Bước 14: Snapshot VMs
 
 ```
 VirtualBox → chọn VM → Snapshots tab (bên phải) → Take:
-  VM1 (Wazuh-Server): Snapshot name = "Day1-Baseline"
-  VM2 (Ubuntu-Agent): Snapshot name = "Day1-Baseline"
+  VM1 (Wazuh-Server): Snapshot name = "Baseline"
+  VM2 (Ubuntu-Agent): Snapshot name = "Baseline"
 ```
 
-> 💡 Snapshot giúp bạn khôi phục lại trạng thái này nếu làm hỏng gì ở ngày 2, 3.
+> 💡 Snapshot giúp bạn khôi phục lại trạng thái này nếu làm hỏng gì ở các bài lab sau.
 
 ---
 
-## ✅ Checklist Cuối Ngày 1
+## ✅ Checklist Hạ Tầng
 
 Đánh dấu tất cả đã hoàn thành:
 
@@ -496,9 +496,9 @@ VirtualBox → chọn VM → Snapshots tab (bên phải) → Take:
 - [ ] Agent Linux (VM2) = Active
 - [ ] Agent Windows (Host) = Active
 - [ ] Attack tools (hydra, nmap) cài xong trên VM2
-- [ ] Snapshot "Day1-Baseline" cho cả 2 VMs
+- [ ] Snapshot "Baseline" cho cả 2 VMs
 
-**Nếu hoàn thành tất cả → bạn đã sẵn sàng cho Ngày 2! 🎉**
+**Nếu hoàn thành tất cả → bạn đã sẵn sàng cho các bài lab thực hành! 🎉**
 
 ---
 
