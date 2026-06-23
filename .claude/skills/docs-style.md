@@ -17,7 +17,7 @@ Chuẩn viết tài liệu trong `docs/`. Bám theo phong cách file `02-install
 
 ## Quy ước trình bày
 
-- Emoji header nhất quán: 🛡️ tổng quan, 📅 ngày, ✅ verify, ⚠️ cảnh báo, 💡 mẹo, ⏳ chờ lâu.
+- Emoji header nhất quán: 🛡️ tổng quan, 🏗️ hạ tầng, 🧪 lab, ✅ verify, ⚠️ cảnh báo, 💡 mẹo, ⏳ chờ lâu.
 - Dùng bảng cho dữ liệu có cấu trúc (IP, agent, so sánh).
 - Mỗi lab/tác vụ nên có cả "Cách dùng script" và "Cách thủ công" khi áp dụng được.
 - Đánh số file docs liên tục (`02`, `03`, `04`...) — link chéo bằng đường dẫn tương đối.

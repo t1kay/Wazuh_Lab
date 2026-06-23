@@ -44,8 +44,9 @@ Sự thật cố định của lab này. Dùng làm nguồn chuẩn — **không
 - Test user brute-force (VM2): `testuser` / `labpassword123`.
 - Port agent→manager: `1514/tcp` (events), `1515/tcp` (enrollment).
 
-## Kế hoạch
+## Nội dung lab
 
-- Ngày 1: hạ tầng → [docs/02-installation.md](../../docs/02-installation.md)
-- Ngày 2: 4 lab (Brute Force, FIM, Active Response, Vuln Scan) → `docs/03-lab-exercises.md`
-- Ngày 3: Custom Rules + báo cáo → `docs/04-custom-rules.md`
+- Hạ tầng → [docs/02-installation.md](../../docs/02-installation.md)
+- 4 lab (Brute Force, FIM, Active Response, Vuln Scan) → `docs/03-lab-exercises.md`
+- Custom Rules + báo cáo → `docs/04-custom-rules.md`
+- Troubleshooting → `docs/05-troubleshooting.md`
