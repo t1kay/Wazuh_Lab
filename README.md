@@ -31,7 +31,6 @@ Dự án lab SIEM (Security Information and Event Management) sử dụng Wazuh 
 | **Ngày 2** | 4 bài lab: Brute Force, FIM, Active Response, Vuln Scan | [03-lab-exercises.md](docs/03-lab-exercises.md) |
 | **Ngày 3** | Custom Rules + Tài liệu báo cáo | [04-custom-rules.md](docs/04-custom-rules.md) |
 | **Tham khảo** | Tổng hợp lỗi đã gặp & cách khắc phục | [05-troubleshooting.md](docs/05-troubleshooting.md) |
-| **Demo** | Kịch bản quay video demo (phần rule mặc định) | [06-demo-script.md](docs/06-demo-script.md) |
 
 ## 🗂️ Cấu Trúc Thư Mục
 
@@ -50,6 +49,16 @@ Dự án lab SIEM (Security Information and Event Management) sử dụng Wazuh 
 1. Đọc [02-installation.md](docs/02-installation.md) — hướng dẫn Ngày 1
 2. Copy scripts vào VMs qua SCP
 3. Chạy scripts và theo dõi hướng dẫn
+
+## 🔑 Lấy Lại Password Admin Dashboard
+
+Password admin (random lúc cài) lưu trong `wazuh-install-files.tar` trên **VM1**. In ra trực tiếp (không cần giải nén ra đĩa):
+
+```bash
+sudo tar -O -xf /home/wazuh/wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt
+```
+
+> 💡 File nằm ở thư mục chạy `wazuh-install.sh` (`/home/wazuh/`), **không** phải `/var/ossec/`. Nếu không nhớ: `sudo find / -name 'wazuh-install-files.tar' 2>/dev/null`. Đăng nhập: `https://192.168.56.10` với user `admin`.
 
 ## 📋 Yêu Cầu
 
