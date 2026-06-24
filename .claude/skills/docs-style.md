@@ -9,11 +9,11 @@ Chuẩn viết tài liệu trong `docs/`. Bám theo phong cách file `02-install
 
 ## Cấu trúc file
 
-1. Tiêu đề `# 📅 ...` + dòng thời gian ước tính (nếu là buổi lab).
+1. Tiêu đề `# <emoji> <Chủ đề>` (theo chủ đề, **không** ghi thời gian ước tính hay đánh số ngày).
 2. Chia **Phần A/B/C...** rồi **Bước 1, 2, 3...** đánh số liên tục.
 3. Mỗi bước có khối lệnh trong code block (`bash`/`powershell`/`yaml`...).
 4. Sau bước quan trọng: dòng `✅ **Verify:**` mô tả output mong đợi.
-5. Cuối file: **Checklist** (`- [ ]`) + mục **❓ Troubleshooting**.
+5. Cuối file: mục **❓ Troubleshooting** (không dùng checklist `- [ ]`).
 
 ## Quy ước trình bày
 
