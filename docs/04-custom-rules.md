@@ -1,6 +1,5 @@
 # 🛡️ Custom Rules & Báo Cáo
 
-> Thời gian ước tính: **4–5 tiếng**
 > Điều kiện: đã chạy xong 4 [bài lab thực hành](03-lab-exercises.md).
 
 ---
@@ -81,18 +80,6 @@ sudo systemctl restart wazuh-manager
 - Backup config đã chỉnh vào `configs/` (ossec.conf, local_rules.xml, local_decoder.xml).
 
 ✅ **Verify:** Mỗi lab có ít nhất 1 screenshot + 1 rule ID tương ứng.
-
----
-
-## ✅ Checklist Custom Rule & Báo Cáo
-
-- [ ] Custom rule `100001` khớp qua `wazuh-logtest`
-- [ ] (Tùy chọn) Custom decoder tách đúng field
-- [ ] Backup config vào `configs/`
-- [ ] Screenshot đầy đủ trong `screenshots/`
-- [ ] Báo cáo hoàn chỉnh 5 mục
-
-**Hoàn thành → kết thúc lab Wazuh SIEM! 🎉**
 
 ---
 

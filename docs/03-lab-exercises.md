@@ -1,6 +1,5 @@
 # 🧪 4 Bài Lab Thực Hành
 
-> Thời gian ước tính: **5–6 tiếng**
 > Điều kiện: đã hoàn thành phần [Xây dựng hạ tầng](02-installation.md) — 2 agent Active, dashboard truy cập được.
 
 ---
@@ -107,16 +106,6 @@ nmap -sV 192.168.56.10
 ✅ **Verify:** Dashboard → *Vulnerability Detection*:
 - Danh sách CVE theo agent, có severity (Critical/High/...).
 - Lọc được theo package và CVE ID.
-
----
-
-## ✅ Checklist Bài Lab
-
-- [x] Lab 1: alert brute force SSH xuất hiện (rule **5763**, kèm 40112 success)
-- [x] Lab 2: sự kiện FIM added/deleted (rule 554/553)
-- [x] Lab 3: Active Response chặn được IP attacker (rule 5763 → firewall-drop → iptables DROP)
-- [x] Lab 4: Vulnerability Detection liệt kê CVE (kernel linux-image, severity High/Medium)
-- [ ] Đã chụp screenshot từng lab cho báo cáo
 
 ---
 
